@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+	<application>
+		<name>webim</name>
+		<alias>webim</alias>
+		<version>1.0</version>
+		<pw-version>9.0</pw-version>
+		<type>app</type>
+		<description>WebIM插件，社区网站内聊天</description>
+		<charset>utf-8</charset>
+		<logo>images/logo.gif</logo>
+		<website>http://www.phpwind.net/u-htm-uid-1793211.html</website>
+		<author-name>webim20.cn</author-name>
+		<author-email>webim20@gmail.com</author-email>
+		<author-icon>https://secure.gravatar.com/avatar/136e370cbf1cf500cbbf791e56dac614?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png</author-icon>
+	</application>
+	<res>resource</res>
+	<inject-services>
+		<s_footer>
+			<webim>
+				<class>EXT:webim.service.srv.AppWebim_Footer_AppDo</class>
+				<loadway>load</loadway>
+				<method>appWebimDo</method>
+				<description>WebIM footer app</description>
+			</webim>
+		</s_PwEditor_app>
+		<s_admin_menu>
+			<webim>
+				<class>EXT:webim.service.srv.AppWebim_Admin_MenuDo</class>
+				<loadway>load</loadway>
+				<method>appWebimDo</method>
+				<description>WebIM admin menu</description>
+			</webim>
+		</s_admin_menu>
+	</inject-services>
+</manifest>

@@ -1,0 +1,5 @@
+webim plugin
+
+/admin(后台模块),/controller(前台模块),/template(模板),/res(静态资源),/conf(配置目录)都是可选目录，
+
+
