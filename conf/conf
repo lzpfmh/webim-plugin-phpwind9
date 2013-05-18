@@ -1,0 +1,16 @@
+<?php
+  return array(
+	'isopen' => '1',
+	'domain' => 'phpwind9',
+	'apikey' => 'phpwind9apikey',
+	'host' => 'im.webim20.cn',
+	'port' => '8080',
+	'local' => 'zh-CN',
+	'emot' => 'default',
+	'opacity' => '80',
+	'show_realname' => '0',
+	'disable_room' => '0',
+	'disable_chatlink' => '0',
+	'disable_menu' => '1',
+);
+?>

@@ -14,30 +14,117 @@
 			<col width="400" />
 			<col />
 			<tr>
-				<th>radio</th>
+				<th>开启WebIM</th>
 				<td>
 					<ul class="switch_list cc">
 						<li><label><input type="radio" name="conf[isopen]" value="1" {@Pw::ifcheck($conf['isopen'] == 1)}><span>开启</span></label></li>
 						<li><label><input type="radio" name="conf[isopen]" value="0" {@Pw::ifcheck($conf['isopen'] == 0)}><span>关闭</span></label></li>
 					</ul>
 				</td>
-				<td><div class="fun_tips">单选框</div></td>
+				<td><div class="fun_tips"></div></td>
 			</tr>
 			<tr>
-				<th>text</th>
+				<th>网站注册域名</th>
 				<td>
-					<input type="text" name="conf[maxalbum]" class="input length_3" value="{$conf['maxalbum']}">
+					<input type="text" name="conf[domain]" class="input length_3" value="{$conf['domain']}">
 				</td>
-				<td><div class="fun_tips">文本框</div></td>
+				<td><div class="fun_tips"></div></td>
 			</tr>
 			<tr>
-				<th>checkbox</th>
-					<td>
-						<input type="checkbox" name="conf[testcheck][]" class="input length_3" value="1" {@Pw::ifcheck(in_array(1, $conf['testcheck']))}>1
-						<input type="checkbox" name="conf[testcheck][]" class="input length_3" value="2" {@Pw::ifcheck(in_array(2, $conf['testcheck']))}>2
-					</td>
-					<td><div class="fun_tips">复选框</div></td>
-				</tr>
+				<th>网站注册ApiKey</th>
+				<td>
+					<input type="text" name="conf[apikey]" class="input length_3" value="{$conf['apikey']}">
+				</td>
+				<td><div class="fun_tips">用于消息服务器通信</div></td>
+			</tr>
+
+			<tr>
+				<th>IM服务器</th>
+				<td>
+					<input type="text" name="conf[host]" class="input length_3" value="{$conf['host']}">
+				</td>
+				<td><div class="fun_tips">IM消息服务器地址或者域名</div></td>
+			</tr>
+
+			<tr>
+				<th>IM服务器端口</th>
+				<td>
+					<input type="text" name="conf[port]" class="input length_3" value="{$conf['port']}">
+				</td>
+				<td><div class="fun_tips"></div></td>
+			</tr>
+
+			<tr>
+				<th>本地语言</th>
+				<td>
+					<ul class="switch_list cc">
+						<li><label><input type="radio" name="conf[local]" value="zh-CN" {@Pw::ifcheck($conf['local'] == 'zh-CN')}><span>简体中文</span></label></li>
+						<li><label><input type="radio" name="conf[local]" value="zh_TW" {@Pw::ifcheck($conf['local'] == 'zh-TW')}><span>繁体中文</span></label></li>
+						<li><label><input type="radio" name="conf[local]" value="en" {@Pw::ifcheck($conf['local'] == 'en')}><span>English</span></label></li>
+					</ul>
+				</td>
+				<td><div class="fun_tips"></div></td>
+			</tr>
+
+			<tr>
+				<th>表情主题</th>
+				<td>
+					<input type="text" name="conf[emot]" class="input length_3" value="{$conf['emot']}">
+				</td>
+				<td><div class="fun_tips"></div></td>
+			</tr>
+
+			<tr>
+				<th>背景透明度</th>
+				<td>
+					<input type="text" name="conf[opacity]" class="input length_3" value="{$conf['opacity']}">
+				</td>
+				<td><div class="fun_tips">Toolbar背景透明度设置，取值0~100</div></td>
+			</tr>
+
+			<tr>
+				<th>显示好友真实姓名</th>
+				<td>
+					<ul class="switch_list cc">
+						<li><label><input type="radio" name="conf[show_realname]" value="1" {@Pw::ifcheck($conf['show_realname'] == 1)}><span>是</span></label></li>
+						<li><label><input type="radio" name="conf[show_realname]" value="0" {@Pw::ifcheck($conf['show_realname'] == 0)}><span>否</span></label></li>
+					</ul>
+				</td>
+				<td><div class="fun_tips"></div></td>
+			</tr>
+
+			<tr>
+				<th>禁止群组聊天</th>
+				<td>
+					<ul class="switch_list cc">
+						<li><label><input type="radio" name="conf[disable_room]" value="1" {@Pw::ifcheck($conf['disable_room'] == 1)}><span>是</span></label></li>
+						<li><label><input type="radio" name="conf[disable_room]" value="0" {@Pw::ifcheck($conf['disable_room'] == 0)}><span>否</span></label></li>
+					</ul>
+				</td>
+				<td><div class="fun_tips"></div></td>
+			</tr>
+
+			<tr>
+				<th>禁止页面嵌入聊天连接</th>
+				<td>
+					<ul class="switch_list cc">
+						<li><label><input type="radio" name="conf[disable_chatlink]" value="1" {@Pw::ifcheck($conf['disable_chatlink'] == 1)}><span>是</span></label></li>
+						<li><label><input type="radio" name="conf[disable_chatlink]" value="0" {@Pw::ifcheck($conf['disable_chatlink'] == 0)}><span>否</span></label></li>
+					</ul>
+				</td>
+				<td><div class="fun_tips"></div></td>
+			</tr>
+
+			<tr>
+				<th>隐藏工具条</th>
+				<td>
+					<ul class="switch_list cc">
+						<li><label><input type="radio" name="conf[disable_menu]" value="1" {@Pw::ifcheck($conf['disable_menu'] == 1)}><span>是</span></label></li>
+						<li><label><input type="radio" name="conf[disable_menu]" value="0" {@Pw::ifcheck($conf['disable_menu'] == 0)}><span>否</span></label></li>
+					</ul>
+				</td>
+				<td><div class="fun_tips"></div></td>
+			</tr>
 		</table>
 	</div>
 	<div class="btn_wrap">
