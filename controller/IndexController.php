@@ -12,15 +12,64 @@ class IndexController extends PwBaseController {
 	
 	public function beforeAction($handlerAdapter) {
 		$this->file = Wind::getRealPath($this->file, false);
+		@include_once dirname(__FILE__) . '../src/common.php';
 	}
 	
 	public function run() {
-		$conf = @include $this->file;
-		if($conf['isopen'] == 1) {
+		$imconf = @include $this->file;
+		if($this->loginUser->isExists() and $imconf['isopen'] == '1') {
 			header("Content-type: application/javascript");
 			/** set no cache in IE */
 			header("Cache-Control: no-cache");
-			echo "alert(\"fuck...\");";
+			if ( $im_is_login ) {
+				$setting = json_encode( webim_get_settings() );
+				$imuser->show = 'unavailable';
+				$imuser = json_encode( $imuser );
+			} else {
+				$setting = "";
+				$imuser = "";
+			}
+			if ( !$conf['disable_menu'] ) {
+				$menu = json_encode( webim_get_menu() );
+			}
+	
+			$s_is_login = $im_is_login ? "1" : "";
+			$s_login_opt = json_encode( array("notice" => "使用phpwind帐号登录", "questions" => null) );
+			$imuser_json = $imuser ? $imuser : '""';
+			$setting_json = $setting ? $setting : '""';
+			$menu_json = $imconf['disable_menu'] ? $menu : '""';
+			$disable_link = $imconf['disable_chatlink'] ? "1" : "";
+			$enable_shortcut = $imconf['enable_shortcut'] ? "1" : "";
+			$disable_menu = $imconf['disable_menu'] ? "1" : "";
+
+			$mincss = window.location.href.indexOf("webim_debug") != -1 ? "" : ".min";
+
+			$script=<<<EOF
+
+			var _IMC = {
+				production_name: 'phpwind',
+				version: '1.0',
+				path: '/webim',
+				is_login: '$s_is_login',
+				login_options: $s_login_opt; 
+				user: $imuser_json,
+				setting: $setting_json,
+				menu: $menu_json,
+				disable_chatlink: '$disable_chatlink',
+				enable_shortcut: '$enable_shortcut',
+				disable_menu: '$disable_menu',
+				theme: '$imconf['theme']',
+				local: '$imconf['local']',
+				jsonp: '1',
+				min: $mincss
+			};
+			_IMC.script = window.webim ? '' : ('<link href="' + _IMC.path + 'static/webim.' + _IMC.production_name + _IMC.min + '.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><link href="' + _IMC.path + 'static/themes/' + _IMC.theme + '/jquery.ui.theme.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><script src="' + _IMC.path + 'static/webim.' + _IMC.production_name + _IMC.min + '.js?' + _IMC.version + '" type="text/javascript"></script><script src="' + _IMC.path + 'static/i18n/webim-' + _IMC.local + '.js?' + _IMC.version + '" type="text/javascript"></script>');
+			_IMC.script += '<script src="' + _IMC.path + 'webim.js?' + _IMC.version + '" type="text/javascript"></script>';
+			document.write( _IMC.script );
+
+EOF;
+			echo $script;
+
 		}
 		exit;
 	}

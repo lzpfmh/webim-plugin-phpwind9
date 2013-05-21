@@ -1,14 +1,16 @@
 <?php
 
-$im_version = '1.1.1';
+define('WEBIM_VERSION, '1.0');
 
 if ( !defined( 'WEBIM_PATH' ) ) 
-	define( 'WEBIM_PATH', dirname( __FILE__ ) . '/' );
+	define( 'WEBIM_PATH', dirname(dirname( __FILE__ )) . '/' );
 
 // Die if PHP is not new enough
 if ( version_compare( PHP_VERSION, '4.3', '<' ) ) {
 	die( sprintf( 'Your server is running PHP version %s but webim requires at least 4.3', PHP_VERSION ) );
 }
+
+$_IMC = @include_once WEBIM_PATH . 'conf/conf';
 
 // Modify error reporting levels to exclude PHP notices
 if( isset( $_IMC['debug'] ) ) {
@@ -52,7 +54,7 @@ require_once( WEBIM_PATH . 'lib/class.webim_client.php' );
  *
  */
 
-require_once( WEBIM_PATH . 'interface.php' );
+require_once( WEBIM_PATH . 'src/interface.php' );
 
 /**
  * $im_params = array_merge( $_GET, $_POST );
