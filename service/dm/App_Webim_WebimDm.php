@@ -8,6 +8,7 @@ defined('WEKIT_VERSION') or exit(403);
  * @license http://www.webim20.cn
  */
 class App_Webim_WebimDm extends PwBaseDm {
+
 	protected $id;
 	
 	/**

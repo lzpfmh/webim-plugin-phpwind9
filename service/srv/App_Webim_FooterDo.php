@@ -13,7 +13,7 @@ class App_Webim_FooterDo {
 	 * 嵌入js脚本
 	 */
 	public function createHtml() {
-		echo "<script type=\"text/javascript\" src=\"http://blog.webim20.cn/webim/custom.js.php?domain=webim20.cn\"></script>"; 
+		echo "<script type=\"text/javascript\" src=\"index.php?m=app&app=webim&c=index&a=run\"></script>"; 
 	}
 }
 

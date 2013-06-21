@@ -1287,6 +1287,8 @@ extend(webim.prototype, objectExtend,{
 	sendMsg: function(msg){
 		var self = this;
 		msg.ticket = self.data.connection.ticket;
+		//TODO: fix csrf later
+		msg.csrf_token = window.webim.csrf_token;
 		self.trigger("sendMsg",[msg]);
 		self.request({
 			type: 'post',
@@ -1298,6 +1300,8 @@ extend(webim.prototype, objectExtend,{
 	sendStatus: function(msg){
 		var self = this;
 		msg.ticket = self.data.connection.ticket;
+		//TODO: fix csrf later
+		msg.csrf_token = window.webim.csrf_token;
 		self.request({
 			type: 'post',
 			url: self.options.urls.status,
@@ -1308,6 +1312,8 @@ extend(webim.prototype, objectExtend,{
 	sendPresence: function(msg){
 		var self = this;
 		msg.ticket = self.data.connection.ticket;
+		//TODO: fix csrf later
+		msg.csrf_token = window.webim.csrf_token;
 		//save show status
 		self.data.user.show = msg.show;
 		self.status.set("s", msg.show);
@@ -1333,6 +1339,8 @@ extend(webim.prototype, objectExtend,{
 		}
 		params = extend({                                
 			//stranger_ids: self.stranger_ids.join(","),
+			//TODO: fix csrf later
+			csrf_token: window.webim.csrf_token,
 			buddy_ids: buddy_ids.join(","),
 			room_ids: room_ids.join(","),
 			show: status.get("s") || "available"
@@ -1375,6 +1383,8 @@ extend(webim.prototype, objectExtend,{
 			cache: false,
 			data: {
 				status: 'offline',
+				//TODO: fix csrf later
+				csrf_token: window.webim.csrf_token,
 				ticket: data.connection.ticket
 			}
 		});
@@ -1389,6 +1399,8 @@ extend(webim.prototype, objectExtend,{
 			type: 'post',
 			cache: false,
 			data: {
+				//TODO: fix csrf later
+				csrf_token: window.webim.csrf_token,
 				ticket: data.connection.ticket
 			}
 		});
@@ -1495,7 +1507,10 @@ model("setting",{
 				url: self.options.url,
 				dataType: 'json',
 				cache: false,
-				data: {data: JSON.encode(_new)}
+				data: { 
+					//TODO: fix csrf later
+					csrf_token: window.webim.csrf_token,
+					data: JSON.encode(_new)}
 			});
 		}
 	}

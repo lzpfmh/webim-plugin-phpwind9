@@ -1,13 +1,14 @@
 <?php
   return array(
 	'isopen' => '1',
-	'domain' => 'phpwind9',
-	'apikey' => 'phpwind9apikey',
-	'host' => 'im.webim20.cn',
-	'port' => '8080',
+	'domain' => 'test',
+	'apikey' => 'test',
+	'host' => 'localhost',
+	'port' => '8000',
 	'local' => 'zh-CN',
 	'emot' => 'default',
 	'opacity' => '80',
+	'theme' => 'base',
 	'show_realname' => '0',
 	'disable_room' => '0',
 	'disable_chatlink' => '0',
