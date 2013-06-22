@@ -949,6 +949,7 @@ extend(comet.prototype, objectExtend, {
                 if(options.jsonp){
                 	extend(o,{
                 	        timeout: options.timeout,
+				async: true,
                 	        dataType: 'jsonp',
                 	        jsonp: 'callback'
                 	});
@@ -2685,6 +2686,7 @@ extend(webimUI.prototype, objectExtend, {
 				history.download("multicast", info.id);
 			}).bind("select", function(info){
 				buddy.presence(info);//online
+				buddy.complete();//Load info.
 				self.addChat("buddy", info.id, null, null, info.nick);
 				layout.focusChat("buddy", info.id);
 			}).bind("block", function(d){
