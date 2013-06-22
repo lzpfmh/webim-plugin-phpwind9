@@ -1197,12 +1197,12 @@ extend(webim.prototype, objectExtend,{
 		var self = this, data = self.data, history = self.history, buddy = self.buddy, room = self.room;
 		history.option("userInfo", data.user);
 		var ids = [];
-		each(data.buddies, function(n, v){
+		data.buddies && each(data.buddies, function(n, v){
 			history.init("unicast", v.id, v.history);
 		});
 		buddy.handle(data.buddies);
 		//rooms
-		each(data.rooms, function(n, v){
+		data.rooms && each(data.rooms, function(n, v){
 			history.init("multicast", v.id, v.history);
 		});
 		//blocked rooms
@@ -1210,7 +1210,7 @@ extend(webim.prototype, objectExtend,{
 		isArray(b) && roomData && each(b,function(n,v){
 			roomData[v] && (roomData[v].blocked = true);
 		});
-		room.handle(roomData);
+		roomData && room.handle(roomData);
 		room.options.ticket = data.connection.ticket;
 		self.trigger("go",[data]);
 		self.connection.connect(data.connection);
@@ -1242,7 +1242,7 @@ extend(webim.prototype, objectExtend,{
 		}).bind("error",function(data){
 			self._stop("connect", "Connect Error");
 		}).bind("close",function(data){
-			self._stop("connect", "Disconnect");
+			!self.options.disableDisconnect && self._stop("connect", "Disconnect");
 		});
 		self.bind("message", function(data){
 			var online_buddies = [], l = data.length, uid = self.data.user.id, v, id, type;
@@ -4680,6 +4680,8 @@ offline
 online
 
 */
+
+var _buddyIMOnline = false;
 app("buddy", {
 	init: function(options){
 		options = options || {};
@@ -4716,13 +4718,14 @@ app("buddy", {
 			ui.addChat("buddy", info.id);
 			ui.layout.focusChat("buddy", info.id);
 		});
+		//Bug... 如果用户还没登录，点击， status.set 会清理掉正在聊天的session
 		buddyUI.window.bind("displayStateChange",function(type){
 			if(type != "minimize"){
 				buddy.option("active", true);
-				im.status.set("b", 1);
+				_buddyIMOnline && im.status.set("b", 1);
 				buddy.complete();
 			}else{
-				im.status.set("b", 0);
+				_buddyIMOnline && im.status.set("b", 0);
 				buddy.option("active", false);
 			}
 		});
@@ -4754,11 +4757,13 @@ app("buddy", {
 	go: function(){
 		var ui = this, im = ui.im, buddy = im.buddy, buddyUI = ui.buddy;
 		ui.user && !ui.user._initElement && buddyUI.window.subHeader(ui.user.element);
+		_buddyIMOnline = true;
 		buddyUI.titleCount();
 		buddyUI.hideError();
 	},
 	stop: function(type, msg){
 		var ui = this, im = ui.im, buddy = im.buddy, buddyUI = ui.buddy;
+		_buddyIMOnline = false;
 		buddyUI.offline();
 		if ( type == "online" || type == "connect" ) {
 			buddyUI.showError( msg );
@@ -5331,6 +5336,7 @@ widget("chatlink",
 	       space_href: [/space\.php\?uid=(\d+)$/i, /space\-(\d+)\.html$/i, /space\-uid\-(\d+)\.html$/i, /\?mod=space&uid=(\d+)/, /\?(\d+)$/],
 	       space_class: /spacemenu_list|line_list|xl\sxl2\scl/i,
 	       space_id: /profile_act/i,
+	       link_class: null,
 	       off_link_class: null,
 	       link_wrap: null,
 	       space_wrap: null
@@ -5343,6 +5349,7 @@ widget("chatlink",
 		       space_href = options.space_href, 
 		       space_id = options.space_id, 
 		       off_link_class = options.off_link_class,
+		       link_class = options.link_class,
 		       space_class = options.space_class, 
 		       space_wrap = options.space_wrap || document, 
 		       link_wrap = options.link_wrap || document;
@@ -5362,8 +5369,8 @@ widget("chatlink",
 
 		       a && each(a, function(i, el){
 			       var id = parse_id(el.href, link_href), text = el.innerHTML;
-			       if(id && children(el).length == 0 && text && (!el.className || !off_link_class || !off_link_class.test(el.className))){
-				       anthors[id] ? anthors[id].push(el) :(anthors[id] = [el]);
+				   if(id && children(el).length == 0 && text && (!el.className || !link_class || link_class.test(el.className)) && (!el.className || !off_link_class || !off_link_class.test(el.className))){
+					   anthors[id] ? anthors[id].push(el) :(anthors[id] = [el]);
 				       list[id] = {id: id, name: text};
 			       }
 		       });
