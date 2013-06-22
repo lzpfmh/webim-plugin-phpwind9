@@ -112,9 +112,11 @@ class App_Webim {
 		return null;
 	}
 
+	//TODO:
 	public function getRooms($uid) {
 		$tags = Wekit::load('tag.PwTag')->getAttentionByUid($uid, 0, 50);
 		$rooms = array();
+		/*
 		foreach($tags as $tag) {
 			$rooms[]=(object)array(
 				'id'=>$tag['id'],
@@ -125,14 +127,16 @@ class App_Webim {
 				'count'=>"");
 
 		}
+		*/
 		return $rooms;
 	}
 
-	//FIXME:
+	//TODO:
 	public function getRoomsByIds($uid, $ids) {
 		return array();
 	}
 
+	//FIXME
 	public function getNotifications($uid) {
 		$notices = Wekit::load('message.PwMessageNotices')->getNotices($uid);
 		$result = array();
@@ -157,6 +161,7 @@ class App_Webim {
 		return $result;
 	} 
 
+	//TODO:
 	public function getMenu($uid) {
 		$menu = array(
 			#array("title" => 'doing',"icon" =>$site_url . "image/app/doing.gif","link" => $site_url . "space.php?do=doing"),

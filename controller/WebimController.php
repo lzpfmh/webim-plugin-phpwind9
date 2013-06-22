@@ -40,6 +40,7 @@ class WebimController extends PwBaseController {
 	}
 
 	public function onlineAction() {
+		$uid = $this->loginUser->uid;
 		#$domain = $this->getInput("domain");
 		$im_buddies = array();//For online.
 		$im_rooms = array();//For online.
@@ -51,8 +52,8 @@ class WebimController extends PwBaseController {
 		$active_rooms = $this->_idsArray( $this->getInput('room_ids') );
 
 		$service = $this->_service();
-		$new_messages = $service->getNewMessages($this->loginUser->uid);
-		$online_buddies = $service->getOnlineBuddies($this->loginUser->uid);
+		$new_messages = $service->getNewMessages($uid);
+		$online_buddies = $service->getOnlineBuddies($uid);
 		$buddies_with_info = array(); //Buddy with info.
 
 		//Active buddy who send a new message.
@@ -89,8 +90,8 @@ class WebimController extends PwBaseController {
 			}
 		}
 		if(!$_IMC['disable_room']){
-			$rooms = $service->getRooms($this->loginUser->uid);
-			$setting = $service->getSetting($this->loginUser->uid);
+			$rooms = $service->getRooms($uid);
+			$setting = $service->getSetting($uid);
 			$blocked_rooms = $setting && is_array($setting->blocked_rooms) ? $setting->blocked_rooms : array();
 			//Find im_rooms 
 			//Except blocked.
@@ -155,17 +156,17 @@ class WebimController extends PwBaseController {
 			//Provide history for active buddies and rooms
 			foreach($active_buddies as $id){
 				if(isset($cache_buddies[$id])){
-					$cache_buddies[$id]->history = $service->getHistory($this->loginUser->uid, $id, "unicast" );
+					$cache_buddies[$id]->history = $service->getHistory($uid, $id, "unicast" );
 				}
 			}
 			foreach($active_rooms as $id){
 				if(isset($cache_rooms[$id])){
-					$cache_rooms[$id]->history = $service->getHistory($this->loginUser->uid, $id, "multicast" );
+					$cache_rooms[$id]->history = $service->getHistory($uid, $id, "multicast" );
 				}
 			}
 			$show_buddies = $o;
 			$data->buddies = $show_buddies;
-			$service->newMessageToHistory($this->loginUser->uid);
+			$service->newMessageToHistory($uid);
 			echo $this->webimCallback($data);
 			exit;
 		} else {
@@ -347,21 +348,6 @@ class WebimController extends PwBaseController {
 
 	private function _service() {
 		return Wekit::load('EXT:webim.service.App_Webim');
-	}
-
-	//TODO: fixme
-	private function profileUrl( $id ) {
-		//global $site_url;
-		//return $site_url . "u.php?action=show&uid=" . $id;
-		
-	}
-
-	//TODO: fixme
-	private function _avatar ($icon) {
-		//require_once(R_P.'require/showimg.php');
-		//$pic_url = showfacedesign($icon, true);
-		//return $pic_url[0];
-		return "";
 	}
 
 	/** Simple function to replicate PHP 5 behaviour */

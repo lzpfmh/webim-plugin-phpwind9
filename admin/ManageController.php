@@ -19,7 +19,6 @@ class ManageController extends AdminBaseController {
 	 * @see WindController::run()
 	 */
 	public function run() {
-		$c = Wekit::C('app_webim');
 		$conf = array(
 			'isopen' => '1',
 			'domain' => 'test',
@@ -35,6 +34,7 @@ class ManageController extends AdminBaseController {
 			'disable_chatlink' => '0',
 			'disable_menu' => '1',
 		);
+		$c = Wekit::C('app_webim');
 		if($c) {
 			if($c['webim.isopen'])	$conf['isopen'] = $c['webim.isopen'];
 			if($c['webim.domain'])	$conf['domain'] = $c['webim.domain'];

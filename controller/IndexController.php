@@ -15,25 +15,22 @@ class IndexController extends PwBaseController {
 	
 	public function run() {
 		$imconf = Wekit::C('app_webim');
+		
 		if($this->loginUser->isExists() and $imconf and $imconf['webim.isopen'] == '1') {
-			
 			header("Content-type: application/javascript");
-			/** set no cache in IE */
 			header("Cache-Control: no-cache");
-			$setting = json_encode( $this->setting($this->loginUser->uid) );
-			$imuser = $this->imuser($this->loginUser->uid);
+			$uid = $this->loginUser->uid;
+			$setting = json_encode($this->setting($uid));
+			$imuser = $this->imuser($uid);
 			$imuser = json_encode( $imuser );
 			if ( !$conf['disable_menu'] ) {
-				$menu = json_encode( array() ); //$this->_service().getMenu() webim_get_menu() );
+				$menu = json_encode( $this->_service()->getMenu($uid) ); 
 			}
 			$windToken = Wind::getComponent('windToken');
 			$csrf_token = $windToken->getToken('csrf_token');
 	
-			$s_is_login = "";
-			$s_login_opt = json_encode( array("notice" => "使用phpwind帐号登录", "questions" => null) );
-			$imuser_json = $imuser ? $imuser : '""';
-			$setting_json = $setting ? $setting : '""';
-			$menu_json = $imconf['webim.disable_menu'] ? $menu : '""';
+			$s_login_opt = json_encode(array("notice" => "使用phpwind帐号登录", "questions" => null) );
+			$menu = $imconf['webim.disable_menu'] ? $menu : '""';
 			$disable_link = $imconf['webim.disable_chatlink'] ? "1" : "";
 			$enable_shortcut = $imconf['webim.enable_shortcut'] ? "1" : "";
 			$disable_menu = $imconf['webim.disable_menu'] ? "1" : "";
@@ -41,7 +38,6 @@ class IndexController extends PwBaseController {
 			$theme = $imconf['webim.theme'];
 			$local = $imconf['webim.local'];
 			
-			//window.location.href.indexOf("webim_debug") != -1 ? "" : ".min"
 			$script=<<<EOF
 
 			var _IMC = {
@@ -51,15 +47,15 @@ class IndexController extends PwBaseController {
 				is_login: '1',
 				login_options: $s_login_opt,
 				csrf_token: '$csrf_token',
-				user: $imuser_json,
-				setting: $setting_json,
-				menu: $menu_json,
+				user: $imuser,
+				setting: $setting,
+				menu: $menu,
 				disable_chatlink: '$disable_chatlink',
 				enable_shortcut: '$enable_shortcut',
 				disable_menu: '$disable_menu',
 				theme: '$theme',
 				local: '$local',
-				min: ''
+				min: window.location.href.indexOf("webim_debug") != -1 ? "" : ".min"
 			};
 			_IMC.script = window.webim ? '' : ('<link href="' + _IMC.path + 'webim.' + _IMC.production_name + _IMC.min + '.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><link href="' + _IMC.path + 'themes/' + _IMC.theme + '/jquery.ui.theme.css?' + _IMC.version + '" media="all" type="text/css" rel="stylesheet"/><script src="' + _IMC.path + 'webim.' + _IMC.production_name + _IMC.min + '.js?' + _IMC.version + '" type="text/javascript"></script><script src="' + _IMC.path + 'i18n/webim-' + _IMC.local + '.js?' + _IMC.version + '" type="text/javascript"></script>');
 			_IMC.script += '<script src="' + _IMC.path + 'webim.js?' + _IMC.version + '" type="text/javascript"></script>';
