@@ -41,7 +41,7 @@ class IndexController extends PwBaseController {
 			$script=<<<EOF
 
 			var _IMC = {
-				production_name: 'phpwind',
+				production_name: 'phpwind9',
 				version: '1.0',
 				path: 'src/extensions/webim/res/',
 				is_login: '1',
