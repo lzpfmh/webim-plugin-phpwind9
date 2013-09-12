@@ -29,24 +29,24 @@ class App_Webim_HistoryDao extends PwBaseDao {
 	 * Get history message
 	 *
 	 * @param string $with chat
-	 * @param string $type unicast or multicast
+	 * @param string $type chat or grpchat
 	 * @param int    $limit history num
 	 *
 	 * Example:
 	 *
-	 * 	webim_get_history( 'susan', 'unicast' );
+	 * 	webim_get_history( 'susan', 'chat' );
 	 *
 	 */
-	public function getHistory($uid, $with, $type = 'unicast', $limit = 30 ) {
-		if( $type == "unicast" ){
+	public function getHistory($uid, $with, $type = 'chat', $limit = 30 ) {
+		if( $type == "chat" ){
 			$sql = $this->_bindSql("SELECT * FROM %s  
-				WHERE `type` = 'unicast' 
+				WHERE `type` = 'chat' 
 				AND ((`to`=%s AND `from`=%s AND `fromdel` != 1) 
 				OR (`send` = 1 AND `from`=%s AND `to`=%s AND `todel` != 1))  
 				ORDER BY timestamp DESC LIMIT %d", $this->getTable(), $with, $uid, $with, $uid, $limit );
 		} else {
 			$sql = $this->_bindSql("SELECT * FROM  %s 
-				WHERE `to`=%s AND `type`='multicast' AND send = 1 
+				WHERE `to`=%s AND `type`='grpchat' AND send = 1 
 				ORDER BY timestamp DESC LIMIT %d", $this->getTable(), $with, $limit);
 		}
 		$smt = $this->getConnection()->createStatement($sql);
@@ -60,12 +60,12 @@ class App_Webim_HistoryDao extends PwBaseDao {
 	 *
 	 */
 	public function clearHistory($uid, $with ) {
-		$fields = array( "fromdel" => 1, "type" => "unicast" );
+		$fields = array( "fromdel" => 1, "type" => "chat" );
 		$sql = $this->_bindSql('UPDATE %s SET %s Where from = ? and to = ?', $this->getTable(), $this->sqlSingle($fields));
 		$smt = $this->getConnection()->createStatement($sql);
 		$smt->update(array($uid, $with));
 		
-		$fields = array( "todel" => 1, "type" => "unicast" );
+		$fields = array( "todel" => 1, "type" => "chat" );
 		$sql = $this->_bindSql('UPDATE %s SET %s Where to = ? and from = ?', $this->getTable(), $this->sqlSingle($fields));
 		$smt = $this->getConnection()->createStatement($sql);
 		$smt->update(array($uid, $with));
