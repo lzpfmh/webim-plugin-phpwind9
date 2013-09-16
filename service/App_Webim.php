@@ -58,7 +58,7 @@ class App_Webim {
 		return $this->_loadDao(self::SETTING_DAO)->updateByUid($uid, $data);
 	}
 
-	public function getHistory($uid, $with, $type = "unicast") {
+	public function getHistory($uid, $with, $type = "chat") {
 		return $this->_loadDao(self::HISTORY_DAO)->getHistory($uid, $with, $type);
 	}
 

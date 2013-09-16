@@ -156,12 +156,12 @@ class WebimController extends PwBaseController {
 			//Provide history for active buddies and rooms
 			foreach($active_buddies as $id){
 				if(isset($cache_buddies[$id])){
-					$cache_buddies[$id]->history = $service->getHistory($uid, $id, "unicast" );
+					$cache_buddies[$id]->history = $service->getHistory($uid, $id, "chat" );
 				}
 			}
 			foreach($active_rooms as $id){
 				if(isset($cache_rooms[$id])){
-					$cache_rooms[$id]->history = $service->getHistory($uid, $id, "multicast" );
+					$cache_rooms[$id]->history = $service->getHistory($uid, $id, "grpchat" );
 				}
 			}
 			$show_buddies = $o;
