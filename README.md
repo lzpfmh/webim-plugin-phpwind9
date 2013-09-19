@@ -7,7 +7,7 @@ WebIM For PHPWind 9.0
 需求
 -----------------------------
 
-*	MySQL版本不低于4.1.2
+*	MySQL版本不低于5.0
 *	需要PHP版本不低于5.3 
 *	PHP访问外部网络，WebIM连接时需要访问WebIM服务器, 请确保您的php环境是否可连接外部网络, 设置php.ini中`allow_url_fopen=ON`.
 
